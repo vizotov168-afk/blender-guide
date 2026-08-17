@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обучение Blender | WizotoW</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5792a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'/%3E%3Cpolyline points='3.27 6.96 12 12.01 20.73 6.96'/%3E%3Cline x1='12' y1='22.08' x2='12' y2='12'/%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="progress-bar" class="progress-bar"></div>
+
+    <div class="bg-animation"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header class="glass header">
+        <div class="logo">
+            <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            <span>Обучение Blender</span>
+        </div>
+
+        <button id="nav-toggle" class="nav-toggle glass-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Открыть меню">
+            <span class="burger"></span>
+        </button>
+
+        <nav id="nav-links" class="nav-links">
+            <a href="#info">О программе</a>
+            <a href="#videos">Видеогайды</a>
+            <a href="#faq">FAQ</a>
+            <a href="#author">Об авторе</a>
+        </nav>
+        <button id="theme-toggle" class="glass-btn theme-btn">☀️ Светлая</button>
+    </header>
+
+    <main>
+        <section id="start" class="hero glass fade-in">
+            <h1>Создавай 3D миры</h1>
+            <p>Интерактивный курс по Blender для Сириус-класса. Освой моделирование, рендер и работу с 3D-графикой.</p>
+            <a href="#videos" class="glass-btn primary-btn">Смотреть уроки</a>
+        </section>
+
+        <section id="info" class="section fade-in">
+            <h2 class="glass-title">О программе Blender</h2>
+            <div class="info-grid">
+                <div class="glass card text-left animate-hover">
+                    <h3>Что это такое?</h3>
+                    <p>Blender — это бесплатный и универсальный 3D-пакет для создания трехмерной графики, анимации, видеомонтажа и визуальных эффектов.</p>
+
+                    <h4 class="links-title">Скачать программу:</h4>
+                    <div class="download-links">
+                        <a href="https://www.blender.org/" target="_blank" rel="noopener" class="glass-link">Официальный сайт</a>
+                        <a href="https://store.steampowered.com/app/365670/Blender/" target="_blank" rel="noopener" class="glass-link">Blender в Steam</a>
+                    </div>
+                </div>
+
+                <div class="glass card text-left animate-hover">
+                    <h3>Системные требования</h3>
+                    <div class="req-tabs">
+                        <div class="req-block">
+                            <h4>Минимальные:</h4>
+                            <ul class="sys-req">
+                                <li><strong>ОС:</strong> Windows 8.1 / 10 / 11 (64-bit)</li>
+                                <li><strong>ЦП:</strong> 2-ядерный 64-бит (от 2.0 ГГц)</li>
+                                <li><strong>ОЗУ:</strong> 8 ГБ</li>
+                                <li><strong>Видеокарта:</strong> 2 ГБ VRAM (OpenGL 4.3)</li>
+                                <li><strong>Диск:</strong> 1 ГБ места</li>
+                            </ul>
+                        </div>
+                        <div class="req-block">
+                            <h4>Рекомендуемые:</h4>
+                            <ul class="sys-req">
+                                <li><strong>ОС:</strong> Windows 10 / 11 (64-bit)</li>
+                                <li><strong>ЦП:</strong> 8-ядерный Intel / AMD</li>
+                                <li><strong>ОЗУ:</strong> 16–32 ГБ</li>
+                                <li><strong>Видеокарта:</strong> 8 ГБ+ VRAM (RTX / RX)</li>
+                                <li><strong>Накопитель:</strong> Быстрый SSD</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="videos" class="section fade-in">
+            <h2 class="glass-title">Практические видеогайды</h2>
+
+            <div class="progress-summary glass">
+                <span id="progress-text">Пройдено 0 из 5 уроков</span>
+                <div class="lesson-progress-track">
+                    <div id="lesson-progress-fill" class="lesson-progress-fill"></div>
+                </div>
+            </div>
+
+            <nav class="quick-nav glass" aria-label="Быстрый переход по урокам">
+                <a href="#lesson1" class="quick-nav-item" data-lesson-link="1">1</a>
+                <a href="#lesson2" class="quick-nav-item" data-lesson-link="2">2</a>
+                <a href="#lesson3" class="quick-nav-item" data-lesson-link="3">3</a>
+                <a href="#lesson4" class="quick-nav-item" data-lesson-link="4">4</a>
+                <a href="#lesson5" class="quick-nav-item" data-lesson-link="5">5</a>
+            </nav>
+
+            <div class="grid-container-video">
+
+                <div id="lesson1" class="glass video-card animate-hover" data-lesson="1">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="assets/lesson1-poster.jpg">
+                            <source src="assets/lesson1.webm" type="video/webm">
+                            Ваш браузер не поддерживает воспроизведение видео. <a href="assets/lesson1.webm">Скачать видео</a>.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Урок 1: Установка и интерфейс</h3>
+                        <p>Скачиваем и устанавливаем Blender, разбираемся, куда делись все кнопки и почему их так много. Знакомимся с 3D-вьюпортом, осями X, Y, Z, учимся вращать, приближать и панорамировать камеру без потери ориентации в пространстве. Разберём режимы отображения (Solid, Wireframe, Material Preview, Rendered) и структуру окон интерфейса, чтобы после этого урока Blender перестал выглядеть как кабина самолёта.</p>
+                        <label class="lesson-check">
+                            <input type="checkbox" data-lesson-checkbox="1">
+                            <span>Урок пройден</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="lesson2" class="glass video-card animate-hover" data-lesson="2">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="assets/lesson2-poster.jpg">
+                            <source src="assets/lesson2.webm" type="video/webm">
+                            Ваш браузер не поддерживает воспроизведение видео. <a href="assets/lesson2.webm">Скачать видео</a>.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Урок 2: Основы моделирования</h3>
+                        <p>Переходим в Edit Mode и учимся видеть модель не как единый объект, а как набор вершин, рёбер и граней. Разбираем ключевые инструменты моделирования: Extrude (выдавливание), Inset (создание внутренней грани), Bevel (скругление рёбер) и Loop Cut (добавление контрольных петель). На практике собираем простую фигуру с нуля и разбираем частые ошибки новичков — например, лишние несвязанные вершины и «дыры» в геометрии.</p>
+                        <label class="lesson-check">
+                            <input type="checkbox" data-lesson-checkbox="2">
+                            <span>Урок пройден</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="lesson3" class="glass video-card animate-hover" data-lesson="3">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="assets/lesson3-poster.jpg">
+                            <source src="assets/lesson3.webm" type="video/webm">
+                            Ваш браузер не поддерживает воспроизведение видео. <a href="assets/lesson3.webm">Скачать видео</a>.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Урок 3: Материалы и шейдеры</h3>
+                        <p>Делаем модель живой: создаём материалы в редакторе Shading и разбираемся, как устроен узел Principled BSDF — цвет (Base Color), шероховатость (Roughness), металличность (Metallic) и другие параметры, которые определяют, будет объект похож на пластик, металл или стекло. Проходим базовую UV-развёртку, чтобы понимать, как текстура «оборачивается» вокруг 3D-модели, и почему без развёртки текстуры часто выглядят криво.</p>
+                        <label class="lesson-check">
+                            <input type="checkbox" data-lesson-checkbox="3">
+                            <span>Урок пройден</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="lesson4" class="glass video-card animate-hover" data-lesson="4">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="assets/lesson4-poster.jpg">
+                            <source src="assets/lesson4.webm" type="video/webm">
+                            Ваш браузер не поддерживает воспроизведение видео. <a href="assets/lesson4.webm">Скачать видео</a>.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Урок 4: Свет и настройка сцены</h3>
+                        <p>Учимся расставлять источники света (Point, Sun, Area, Spot) и понимать, как каждый тип влияет на настроение кадра. Разбираем HDRI-карты окружения — быстрый способ получить реалистичное освещение без ручной расстановки десятка ламп. Сравниваем два движка рендера: EEVEE (быстрый, для превью и слабых ПК) и Cycles (реалистичный, но медленнее) — и разбираемся, когда какой выбирать.</p>
+                        <label class="lesson-check">
+                            <input type="checkbox" data-lesson-checkbox="4">
+                            <span>Урок пройден</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="lesson5" class="glass video-card animate-hover" data-lesson="5">
+                    <div class="video-wrapper">
+                        <video controls preload="metadata" poster="assets/lesson5-poster.jpg">
+                            <source src="assets/lesson5.webm" type="video/webm">
+                            Ваш браузер не поддерживает воспроизведение видео. <a href="assets/lesson5.webm">Скачать видео</a>.
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Урок 5: Финальный рендер</h3>
+                        <p>Настраиваем камеру и композицию кадра, выставляем параметры разрешения и качества рендера. Разбираем шумоподавление (Denoiser) — что это такое и почему без него рендер на Cycles может выглядеть «зернистым». В конце — экспортируем готовое изображение и подводим итог: от пустой сцены до финальной картинки, которую не стыдно показать.</p>
+                        <label class="lesson-check">
+                            <input type="checkbox" data-lesson-checkbox="5">
+                            <span>Урок пройден</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="faq" class="section fade-in">
+            <h2 class="glass-title">Частые вопросы</h2>
+            <div class="faq-list">
+
+                <details class="glass faq-item">
+                    <summary>Blender правда бесплатный, без подвоха?</summary>
+                    <p>Да, полностью. Blender — open-source проект, его разрабатывает сообщество и Blender Foundation. Никаких платных версий, скрытых подписок или водяных знаков на рендерах — это не «триал», а полноценный профессиональный инструмент, на котором делают и инди-игры, и голливудские эффекты.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>У меня слабый ноутбук, вообще получится начать?</summary>
+                    <p>Получится. Для базового моделирования и простых сцен хватит и минимальных характеристик из блока выше. Рендерить сложные сцены с реалистичным светом (Cycles) на слабом железе будет медленно — но для обучения и первых проектов достаточно EEVEE, он гораздо легче и почти не грузит систему.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>С чего начать, если я вообще не рисовал и не занимался 3D?</summary>
+                    <p>Отлично, что не рисовал — Blender это не про художественный талант, а про геометрию, логику и привычку к инструменту. Начни с урока 1 по порядку, не пропускай интерфейс: 80% первых трудностей у новичков — не «не умею моделировать», а «не понимаю, куда нажимать».</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>В чём разница между EEVEE и Cycles на практике?</summary>
+                    <p>EEVEE — растровый движок реального времени: рендерит почти мгновенно, идеален для черновиков и превью, но свет и отражения в нём чуть более «упрощённые». Cycles — движок трассировки лучей: считает свет физически точно (отражения, преломления, мягкие тени), но рендер может занимать минуты и даже часы на сложных сценах.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>Рендер в Cycles занимает вечность, это нормально?</summary>
+                    <p>Отчасти да, но это управляемо. Проверь количество Samples в настройках рендера (часто новички ставят значение с запасом «на всякий случай») и включи Denoiser — он позволяет уменьшить число сэмплов без потери качества картинки. Также сильно влияет разрешение экрана и сложность материалов со стеклом/подповерхностным рассеиванием.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>Какие горячие клавиши учить в первую очередь?</summary>
+                    <p>Хватит буквально пяти: <strong>Tab</strong> — переключение Object/Edit Mode, <strong>G / R / S</strong> — перемещение, вращение, масштаб, <strong>E</strong> — Extrude, <strong>Ctrl+R</strong> — Loop Cut. Дальше горячие клавиши запоминаются сами по себе просто в процессе работы — заучивать весь список сразу смысла нет.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>Модель "разваливается" или выглядит криво после экспорта — почему?</summary>
+                    <p>Чаще всего это неприменённые трансформации (Scale/Rotation не равны 1/0) или перевёрнутые нормали граней. Перед экспортом полезно применить трансформации через <strong>Ctrl+A → All Transforms</strong> и проверить нормали в режиме Edit Mode — это решает большинство подобных проблем.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>Стоит ли сразу пробовать анимацию, или сначала добить моделирование?</summary>
+                    <p>Сначала моделирование и материалы — это база, без которой анимировать особо нечего. Анимация — это уже управление готовыми объектами во времени (ключевые кадры, интерполяция), и учить её проще, когда ты уже свободно ориентируешься в сцене и не тормозишь на базовых операциях.</p>
+                </details>
+
+                <details class="glass faq-item">
+                    <summary>Где потом реально применить навык 3D-моделирования?</summary>
+                    <p>Геймдев (модели и окружение для игр), архитектурная визуализация, моушн-дизайн и реклама, 3D-печать, VFX для видео, даже дизайн продуктов и мерча. Blender сейчас используют не только энтузиасты — на нём выпущены реальные короткометражки и работают студии, так что это не «игрушечный» навык.</p>
+                </details>
+
+            </div>
+        </section>
+
+        <section id="author" class="section fade-in">
+            <h2 class="glass-title">Об авторе проекта</h2>
+            <div class="glass author-card animate-hover">
+                <div class="author-avatar-container">
+                    <img src="assets/avatar.jpg" alt="WizotoW" class="author-avatar">
+                </div>
+                <div class="author-info">
+                    <h3>WizotoW</h3>
+                    <p class="author-role">Hardware Enthusiast | Сириус-класс</p>
+                    <p class="author-desc">Автор проекта. Не фанат написания кода, зато обожаю разбираться в «железе», собирать ПК, настраивать BIOS и переустанавливать Windows. Считаю, что Blender — лучший способ проверить, на что способна система и видеокарта при нагрузке.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="credits" class="section fade-in">
+            <h2 class="glass-title">Команда проекта</h2>
+            <div class="glass credits-grid">
+                <div class="credit-item"><span>Код сайта:</span> ❤️ Claude & Gemini ❤️</div>
+                <div class="credit-item"><span>Промпт-инжиниринг:</span> WizotoW</div>
+                <div class="credit-item"><span>Видеомонтаж:</span> WizotoW</div>
+                <div class="credit-item"><span>Озвучка:</span> ИИ-голос (Bratishkinoff)</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass footer fade-in">
+        <p>© 2026 WizotoW | Проектный класс Сириус</p>
+        <p class="small-text">Собрано на энтузиазме, качественном охлаждении и любви к компьютерному железу.</p>
+    </footer>
+
+    <button id="back-to-top" class="back-to-top" title="Наверх" aria-label="Наверх">↑</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
