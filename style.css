@@ -398,3 +398,25 @@ p { font-size: 1.1rem; line-height: 1.6; }
     .orb { filter: blur(50px); opacity: 0.12; }
     .bg-animation { animation: none; background-position: 50% 50%; }
 }
+@media (max-width: 768px) {
+    .nav-links.open {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sim-panel,
+    .lab-preview,
+    .lab-controls,
+    .practice-cta {
+        padding: 16px;
+    }
+
+    .glossary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .engine-btn {
+        min-width: 100%;
+    }
+}
