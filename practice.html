@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практика и словарь терминов | Обучение Blender</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5792a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'/%3E%3Cpolyline points='3.27 6.96 12 12.01 20.73 6.96'/%3E%3Cline x1='12' y1='22.08' x2='12' y2='12'/%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="progress-bar" class="progress-bar"></div>
+
+    <div class="bg-animation"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <header class="glass header">
+        <a href="index.html" class="logo logo-link">
+            <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2='12'></line>
+            </svg>
+            <span>Обучение Blender</span>
+        </a>
+
+        <button id="nav-toggle" class="nav-toggle glass-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Открыть меню">
+            <span class="burger"></span>
+        </button>
+
+        <nav id="nav-links" class="nav-links">
+            <a href="index.html">← Теория и уроки</a>
+            <a href="#simulator">3D-тренажёр</a>
+            <a href="#lab">Лаборатория рендера</a>
+            <a href="#tasks">Практикум</a>
+            <a href="#glossary">Словарь</a>
+        </nav>
+        <button id="theme-toggle" class="glass-btn theme-btn">☀️ Светлая</button>
+    </header>
+
+    <main>
+        <section id="practice-hero" class="hero glass fade-in">
+            <span class="section-badge">Раздел 2 • Интерактивная практика</span>
+            <h1>Практика и словарь новичка</h1>
+            <p>Попробуй горячие клавиши Blender прямо в браузерном 3D-вьюпорте, протестируй шейдеры с движками EEVEE и Cycles и разберись в каждом непонятном термине.</p>
+            <div class="hero-btn-group">
+                <a href="#simulator" class="glass-btn primary-btn">Запустить 3D-тренажёр</a>
+                <a href="#glossary" class="glass-btn secondary-btn">Открыть словарь (18 слов)</a>
+            </div>
+        </section>
+
+        <!-- 1. ИНТЕРАКТИВНЫЙ 3D-СИМУЛЯТОР ГОРЯЧИХ КЛАВИШ -->
+        <section id="simulator" class="section fade-in">
+            <h2 class="glass-title">Интерактивный 3D-симулятор горячих клавиш</h2>
+
+            <div class="sim-layout">
+                <div class="glass viewport-box">
+                    <div class="viewport-hud-top">
+                        <span id="sim-mode-badge" class="hud-pill">Object Mode</span>
+                        <span id="sim-key-badge" class="hud-pill hud-key">Ожидание клавиши...</span>
+                    </div>
+
+                    <canvas id="sim-canvas" width="760" height="460" tabindex="0" aria-label="Интерактивный 3D вьюпорт Blender"></canvas>
+
+                    <div class="viewport-hud-bottom">
+                        <span>🖱️ Тяни мышкой или пальцем, чтобы вращать камеру</span>
+                        <button id="sim-reset-btn" type="button" class="glass-btn mini-btn">↺ Начать заново</button>
+                    </div>
+                </div>
+
+                <div class="glass sim-panel">
+                    <div class="sim-panel-head">
+                        <h3>Собери 3D-дом хоткеями</h3>
+                        <span id="sim-step-counter" class="step-counter">Шаг 1 из 5</span>
+                    </div>
+                    <p id="sim-instruction" class="sim-instruction">
+                        Нажми клавишу <kbd>Tab</kbd> (или кнопку ниже), чтобы переключиться в режим редактирования <strong>Edit Mode</strong> и увидеть вершины куба.
+                    </p>
+
+                    <div class="sim-steps-list" id="sim-steps-list">
+                        <div class="sim-step active" data-step="0">
+                            <span class="sim-step-num">1</span>
+                            <div class="sim-step-body">
+                                <strong>Режим редактирования</strong>
+                                <span>Переход в Edit Mode (подсветка вершин)</span>
+                            </div>
+                            <button type="button" class="kbd-btn" data-trigger-key="Tab">Tab</button>
+                        </div>
+
+                        <div class="sim-step" data-step="1">
+                            <span class="sim-step-num">2</span>
+                            <div class="sim-step-body">
+                                <strong>Кольцевой разрез (Loop Cut)</strong>
+                                <span>Добавление центрального ребра для крыши</span>
+                            </div>
+                            <button type="button" class="kbd-btn" data-trigger-key="Ctrl+R">Ctrl + R</button>
+                        </div>
+
+                        <div class="sim-step" data-step="2">
+                            <span class="sim-step-num">3</span>
+                            <div class="sim-step-body">
+                                <strong>Выдавливание (Extrude)</strong>
+                                <span>Подъём конька крыши по оси Z</span>
+                            </div>
+                            <button type="button" class="kbd-btn" data-trigger-key="E">E</button>
+                        </div>
+
+                        <div class="sim-step" data-step="3">
+                            <span class="sim-step-num">4</span>
+                            <div class="sim-step-body">
+                                <strong>Снятие фаски (Bevel)</strong>
+                                <span>Аккуратное скругление углов модели</span>
+                            </div>
+                            <button type="button" class="kbd-btn" data-trigger-key="Ctrl+B">Ctrl + B</button>
+                        </div>
+
+                        <div class="sim-step" data-step="4">
+                            <span class="sim-step-num">5</span>
+                            <div class="sim-step-body">
+                                <strong>Финальный рендер (Render)</strong>
+                                <span>Просчёт света, теней и светящихся окон</span>
+                            </div>
+                            <button type="button" class="kbd-btn" data-trigger-key="F12">F12</button>
+                        </div>
+                    </div>
+
+                    <div id="sim-complete-banner" class="sim-complete-banner" hidden>
+                        🎉 <strong>Готово!</strong> Ты прошёл полный цикл от куба до финального рендера!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ЛАБОРАТОРИЯ МАТЕРИАЛОВ И РЕНДЕРА (EEVEE VS CYCLES) -->
+        <section id="lab" class="section fade-in">
+            <h2 class="glass-title">Лаборатория шейдеров и движков рендера</h2>
+
+            <div class="lab-layout">
+                <div class="glass lab-preview">
+                    <div class="lab-top-bar">
+                        <div class="lab-shape-switch">
+                            <button type="button" class="glass-btn mini-btn active" data-lab-shape="house">🏠 3D-дом</button>
+                            <button type="button" class="glass-btn mini-btn" data-lab-shape="sphere">🔮 Шейдер-шар</button>
+                        </div>
+                        <span id="lab-render-status" class="hud-pill">Движок: Cycles + Denoiser</span>
+                    </div>
+
+                    <canvas id="lab-canvas" width="560" height="380" aria-label="Превью материала и рендера"></canvas>
+
+                    <p id="lab-engine-hint" class="lab-hint">
+                        <strong>Cycles + Denoiser:</strong> физически точные мягкие тени, а нейросетевой шумоподавитель очищает «зернистость».
+                    </p>
+                </div>
+
+                <div class="glass lab-controls">
+                    <h3>Узел Principled BSDF и рендер</h3>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Base Color (Базовый цвет)</span>
+                            <div class="color-presets">
+                                <button type="button" class="color-dot active" style="background:#e06d3b" data-color="#e06d3b" title="Терракота"></button>
+                                <button type="button" class="color-dot" style="background:#38bdf8" data-color="#38bdf8" title="Небесный"></button>
+                                <button type="button" class="color-dot" style="background:#34d399" data-color="#34d399" title="Изумруд"></button>
+                                <button type="button" class="color-dot" style="background:#a78bfa" data-color="#a78bfa" title="Аметист"></button>
+                                <input type="color" id="lab-color" value="#e06d3b" aria-label="Выбор цвета материала">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label for="lab-roughness">Roughness (Шероховатость / Блеск)</label>
+                            <span id="lab-roughness-val" class="val-badge">0.35</span>
+                        </div>
+                        <input type="range" id="lab-roughness" min="0.05" max="1" step="0.05" value="0.35">
+                        <div class="range-hints"><span>0.05 (Зеркальный блик)</span><span>1.00 (Матовый)</span></div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label for="lab-emission">Emission (Свечение окон / неона)</label>
+                            <span id="lab-emission-val" class="val-badge">0.80</span>
+                        </div>
+                        <input type="range" id="lab-emission" min="0" max="1" step="0.05" value="0.80">
+                    </div>
+
+                    <div class="control-group">
+                        <span class="control-title">Движок рендера:</span>
+                        <div class="engine-buttons">
+                            <button type="button" class="glass-btn engine-btn" data-engine="eevee">⚡ EEVEE (Быстрый)</button>
+                            <button type="button" class="glass-btn engine-btn active" data-engine="cycles">🎥 Cycles (Фотореализм)</button>
+                        </div>
+                    </div>
+
+                    <label class="lesson-check lab-denoise-check" id="denoise-wrapper">
+                        <input type="checkbox" id="lab-denoiser" checked>
+                        <span>Включить <strong>Denoiser</strong> (убрать шум в Cycles)</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ПРАКТИЧЕСКИЕ ЗАДАНИЯ К 5 УРОКАМ -->
+        <section id="tasks" class="section fade-in">
+            <h2 class="glass-title">Практикум по 5 урокам курса</h2>
+
+            <div class="progress-summary glass">
+                <span id="practice-progress-text">Выполнено 0 из 5 заданий</span>
+                <div class="lesson-progress-track">
+                    <div id="practice-progress-fill" class="lesson-progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="grid-container-video">
+                <div class="glass card text-left animate-hover task-card">
+                    <span class="task-tag">Урок 1 • Интерфейс</span>
+                    <h3>Задание 1: Навигация во вьюпорте</h3>
+                    <ol class="task-list">
+                        <li>Открой Blender, выдели всё клавишей <kbd>A</kbd> и удали через <kbd>X</kbd>.</li>
+                        <li>Создай новый куб: <kbd>Shift + A</kbd> → <strong>Mesh → Cube</strong>.</li>
+                        <li>Покрути камеру зажатым колесом мыши и переключи виды: <kbd>Numpad 1</kbd> (спереди) и <kbd>Numpad 3</kbd> (сбоку).</li>
+                    </ol>
+                    <p class="task-tip">💡 Если потерял объект из вида — нажми <kbd>Numpad .</kbd> (точка), камера сразу вернётся к нему.</p>
+                    <label class="lesson-check">
+                        <input type="checkbox" data-task-checkbox="1">
+                        <span>Задание выполнено</span>
+                    </label>
+                </div>
+
+                <div class="glass card text-left animate-hover task-card">
+                    <span class="task-tag">Урок 2 • Моделирование</span>
+                    <h3>Задание 2: Сборка домика в Edit Mode</h3>
+                    <ol class="task-list">
+                        <li>Нажми <kbd>Tab</kbd> для входа в режим редактирования <strong>Edit Mode</strong>.</li>
+                        <li>Разрежь куб пополам через <kbd>Ctrl + R</kbd> и вытяни верхнее ребро вверх (<kbd>G</kbd> → <kbd>Z</kbd>) для крыши.</li>
+                        <li>На передней стене выдели грань (<kbd>3</kbd>), сделай рамку окна клавишей <kbd>I</kbd> и вдави внутрь через <kbd>E</kbd>.</li>
+                    </ol>
+                    <p class="task-tip">💡 Не нажимай <kbd>E</kbd> дважды без движения мыши — так появляются дубликаты вершин.</p>
+                    <label class="lesson-check">
+                        <input type="checkbox" data-task-checkbox="2">
+                        <span>Задание выполнено</span>
+                    </label>
+                </div>
+
+                <div class="glass card text-left animate-hover task-card">
+                    <span class="task-tag">Урок 3 • Материалы</span>
+                    <h3>Задание 3: Шейдеры и светящиеся окна</h3>
+                    <ol class="task-list">
+                        <li>Переключи режим вьюпорта в <strong>Material Preview</strong> (клавиша <kbd>Z</kbd>).</li>
+                        <li>Создай материал стен на базе <strong>Principled BSDF</strong> и настрой цвет <strong>Base Color</strong>.</li>
+                        <li>Добавь второй слот материала для окон, задай тёплый цвет в <strong>Emission</strong> и нажми <strong>Assign</strong>.</li>
+                    </ol>
+                    <p class="task-tip">💡 Параметр <strong>Roughness = 0.8</strong> сделает стены матовыми, как настоящая штукатурка.</p>
+                    <label class="lesson-check">
+                        <input type="checkbox" data-task-checkbox="3">
+                        <span>Задание выполнено</span>
+                    </label>
+                </div>
+
+                <div class="glass card text-left animate-hover task-card">
+                    <span class="task-tag">Урок 4 • Освещение</span>
+                    <h3>Задание 4: Свет и сравнение движков</h3>
+                    <ol class="task-list">
+                        <li>Добавь источник света <kbd>Shift + A</kbd> → <strong>Light → Area</strong> и направь на фасад дома.</li>
+                        <li>Включи режим <strong>Rendered</strong> (<kbd>Z</kbd>), чтобы увидеть тени в реальном времени.</li>
+                        <li>Сравни скорость работы движков <strong>EEVEE</strong> и <strong>Cycles</strong> во вкладке Render Properties.</li>
+                    </ol>
+                    <p class="task-tip">💡 На слабом школьном или домашнем ноутбуке для работы всегда выбирай <strong>EEVEE</strong>.</p>
+                    <label class="lesson-check">
+                        <input type="checkbox" data-task-checkbox="4">
+                        <span>Задание выполнено</span>
+                    </label>
+                </div>
+
+                <div class="glass card text-left animate-hover task-card">
+                    <span class="task-tag">Урок 5 • Финальный рендер</span>
+                    <h3>Задание 5: Камера и рендер без шума</h3>
+                    <ol class="task-list">
+                        <li>Создай камеру (<kbd>Shift + A</kbd> → <strong>Camera</strong>) и привяжи к виду: <kbd>Ctrl + Alt + Numpad 0</kbd>.</li>
+                        <li>При выборе движка <strong>Cycles</strong> поставь галочку <strong>Denoise</strong>.</li>
+                        <li>Запусти рендер клавишей <kbd>F12</kbd> и сохрани готовую картинку (<strong>Image → Save As</strong>).</li>
+                    </ol>
+                    <p class="task-tip">💡 С включённым <strong>Denoiser</strong> достаточно 64–128 сэмплов для чистой картинки без «зерна».</p>
+                    <label class="lesson-check">
+                        <input type="checkbox" data-task-checkbox="5">
+                        <span>Задание выполнено</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ПОНЯТНЫЙ СЛОВАРЬ ТЕРМИНОВ ДЛЯ НОВИЧКОВ -->
+        <section id="glossary" class="section fade-in">
+            <h2 class="glass-title">Словарь 3D-терминов для новичков</h2>
+
+            <div class="glass glossary-controls">
+                <input type="text" id="glossary-search" class="glossary-search" placeholder="🔍 Введи непонятное слово (например: рендер, шейдер, фаска, нормали...)" aria-label="Поиск по словарю терминов">
+                <div class="glossary-filters" id="glossary-filters">
+                    <button type="button" class="glass-btn mini-btn active" data-filter="all">Все термины (18)</button>
+                    <button type="button" class="glass-btn mini-btn" data-filter="interface">Интерфейс и режимы</button>
+                    <button type="button" class="glass-btn mini-btn" data-filter="modeling">Моделирование</button>
+                    <button type="button" class="glass-btn mini-btn" data-filter="shading">Материалы и свет</button>
+                    <button type="button" class="glass-btn mini-btn" data-filter="render">Рендер</button>
+                </div>
+            </div>
+
+            <div id="glossary-grid" class="glossary-grid"></div>
+            <p id="glossary-empty" class="glossary-empty" hidden>По твоему запросу ничего не нашлось. Попробуй ввести другое слово.</p>
+
+            <div class="back-home-wrap">
+                <a href="index.html" class="glass-btn primary-btn">← Вернуться к теории и 5 видеоурокам</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass footer fade-in">
+        <p>© 2026 WizotoW | Проектный класс Сириус</p>
+        <p class="small-text">Интерактивный образовательный проект по 3D-моделированию.</p>
+    </footer>
+
+    <button id="back-to-top" class="back-to-top" title="Наверх" aria-label="Наверх">↑</button>
+
+    <script src="practice.js"></script>
+</body>
+</html>
