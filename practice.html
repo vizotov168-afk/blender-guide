@@ -21,7 +21,7 @@
             <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2='12'></line>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
             </svg>
             <span>Обучение Blender</span>
         </a>
@@ -33,7 +33,7 @@
         <nav id="nav-links" class="nav-links">
             <a href="index.html">← Теория и уроки</a>
             <a href="#simulator">3D-тренажёр</a>
-            <a href="#lab">Лаборатория рендера</a>
+            <a href="#lab">Лаборатория шейдеров</a>
             <a href="#tasks">Практикум</a>
             <a href="#glossary">Словарь</a>
         </nav>
@@ -42,41 +42,90 @@
 
     <main>
         <section id="practice-hero" class="hero glass fade-in">
-            <span class="section-badge">Раздел 2 • Интерактивная практика</span>
+            <span class="section-badge">Раздел 2 • Интерактивная практика Blender 4.x</span>
             <h1>Практика и словарь новичка</h1>
-            <p>Попробуй горячие клавиши Blender прямо в браузерном 3D-вьюпорте, протестируй шейдеры с движками EEVEE и Cycles и разберись в каждом непонятном термине.</p>
+            <p>Испытай интерфейс и горячие клавиши настоящего Blender прямо в браузере, покрути 3D-шейдеры в узле Principled BSDF и разберись в каждом термине.</p>
             <div class="hero-btn-group">
-                <a href="#simulator" class="glass-btn primary-btn">Запустить 3D-тренажёр</a>
-                <a href="#glossary" class="glass-btn secondary-btn">Открыть словарь (18 слов)</a>
+                <a href="#simulator" class="glass-btn primary-btn">Запустить 3D-вьюпорт</a>
+                <a href="#lab" class="glass-btn secondary-btn">Открыть Shader Editor</a>
+                <a href="#glossary" class="glass-btn secondary-btn">Словарь (18 слов)</a>
             </div>
         </section>
 
-        <!-- 1. ИНТЕРАКТИВНЫЙ 3D-СИМУЛЯТОР ГОРЯЧИХ КЛАВИШ -->
+        <!-- 1. ИНТЕРАКТИВНЫЙ 3D-СИМУЛЯТОР ВЬЮПОРТА BLENDER -->
         <section id="simulator" class="section fade-in">
-            <h2 class="glass-title">Интерактивный 3D-симулятор горячих клавиш</h2>
+            <h2 class="glass-title">Интерактивный 3D-вьюпорт и тренажёр хоткеев</h2>
 
             <div class="sim-layout">
-                <div class="glass viewport-box">
-                    <div class="viewport-hud-top">
-                        <span id="sim-mode-badge" class="hud-pill">Object Mode</span>
-                        <span id="sim-key-badge" class="hud-pill hud-key">Ожидание клавиши...</span>
+                <div class="glass viewport-box blender-window">
+                    <!-- Верхняя панель как в настоящем Blender 4.x -->
+                    <div class="blender-topbar">
+                        <div class="blender-topbar-left">
+                            <span class="blender-editor-icon" title="3D Viewport">⚃</span>
+                            <span id="sim-mode-badge" class="blender-mode-select">Object Mode ▾</span>
+                            <div class="blender-sel-modes" id="sim-sel-modes" title="Режимы выделения (1 - Вершины, 2 - Рёбра, 3 - Грани)">
+                                <button type="button" class="sel-mode-btn active" data-sel-mode="vert" title="Vertex Select (1)">⚀</button>
+                                <button type="button" class="sel-mode-btn" data-sel-mode="edge" title="Edge Select (2)">⚁</button>
+                                <button type="button" class="sel-mode-btn" data-sel-mode="face" title="Face Select (3)">⚂</button>
+                            </div>
+                        </div>
+
+                        <div class="blender-topbar-right">
+                            <span id="device-mode-badge" class="device-pill">💻 ПК-режим</span>
+                            <div class="shading-spheres" title="Режимы отображения вьюпорта (Z)">
+                                <button type="button" class="shade-btn" data-shade="wire" title="Wireframe (Каркас)">◌</button>
+                                <button type="button" class="shade-btn active" data-shade="solid" title="Solid (Сплошной)">●</button>
+                                <button type="button" class="shade-btn" data-shade="mat" title="Material Preview">◐</button>
+                                <button type="button" class="shade-btn" data-shade="render" title="Rendered (Рендер)">◉</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <canvas id="sim-canvas" width="760" height="460" tabindex="0" aria-label="Интерактивный 3D вьюпорт Blender"></canvas>
+                    <!-- Рабочая область вьюпорта с левым тулбаром T-panel -->
+                    <div class="blender-workspace">
+                        <div class="blender-toolbar" aria-label="Инструменты Blender">
+                            <button type="button" class="tool-icon active" data-tool="select" title="Select Box (W)">⬚</button>
+                            <button type="button" class="tool-icon" data-tool="move" title="Move (G)">✥</button>
+                            <button type="button" class="tool-icon" data-tool="extrude" title="Extrude Region (E)">⇪</button>
+                            <button type="button" class="tool-icon" data-tool="loopcut" title="Loop Cut (Ctrl+R)">⊞</button>
+                            <button type="button" class="tool-icon" data-tool="bevel" title="Bevel (Ctrl+B)">◩</button>
+                        </div>
 
-                    <div class="viewport-hud-bottom">
-                        <span>🖱️ Тяни мышкой или пальцем, чтобы вращать камеру</span>
-                        <button id="sim-reset-btn" type="button" class="glass-btn mini-btn">↺ Начать заново</button>
+                        <div class="canvas-stage">
+                            <canvas id="sim-canvas" width="780" height="470" tabindex="0" aria-label="Интерактивный 3D вьюпорт Blender"></canvas>
+
+                            <!-- Быстрая мобильная панель хоткеев прямо поверх/под канвасом -->
+                            <div class="quick-hotkey-bar">
+                                <span class="quick-bar-label">Быстрый ввод:</span>
+                                <button type="button" class="quick-key-btn" data-trigger-key="Tab">Tab</button>
+                                <button type="button" class="quick-key-btn" data-trigger-key="Ctrl+R">Ctrl+R</button>
+                                <button type="button" class="quick-key-btn" data-trigger-key="E">E</button>
+                                <button type="button" class="quick-key-btn" data-trigger-key="Ctrl+B">Ctrl+B</button>
+                                <button type="button" class="quick-key-btn" data-trigger-key="F12">F12</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Нижний статус-бар Blender со статистикой сцены -->
+                    <div class="blender-statusbar">
+                        <span id="sim-key-badge" class="status-key-pill">Ожидание команды...</span>
+                        <span id="sim-stats-text" class="status-stats">Verts: 8 | Edges: 12 | Faces: 6</span>
+                        <div class="status-actions">
+                            <button id="sim-zoom-in" type="button" class="glass-btn mini-btn" title="Приблизить">＋</button>
+                            <button id="sim-zoom-out" type="button" class="glass-btn mini-btn" title="Отдалить">－</button>
+                            <button id="sim-reset-btn" type="button" class="glass-btn mini-btn">↺ Сброс</button>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Правая панель заданий тренажёра -->
                 <div class="glass sim-panel">
                     <div class="sim-panel-head">
-                        <h3>Собери 3D-дом хоткеями</h3>
+                        <h3>Миссия: от куба до рендера</h3>
                         <span id="sim-step-counter" class="step-counter">Шаг 1 из 5</span>
                     </div>
                     <p id="sim-instruction" class="sim-instruction">
-                        Нажми клавишу <kbd>Tab</kbd> (или кнопку ниже), чтобы переключиться в режим редактирования <strong>Edit Mode</strong> и увидеть вершины куба.
+                        Нажми клавишу <kbd>Tab</kbd> (или кнопку в списке), чтобы перевести стартовый куб в <strong>Edit Mode</strong> и открыть доступ к вершинам и рёбрам.
                     </p>
 
                     <div class="sim-steps-list" id="sim-steps-list">
@@ -84,7 +133,7 @@
                             <span class="sim-step-num">1</span>
                             <div class="sim-step-body">
                                 <strong>Режим редактирования</strong>
-                                <span>Переход в Edit Mode (подсветка вершин)</span>
+                                <span>Переход Object Mode → Edit Mode</span>
                             </div>
                             <button type="button" class="kbd-btn" data-trigger-key="Tab">Tab</button>
                         </div>
@@ -92,8 +141,8 @@
                         <div class="sim-step" data-step="1">
                             <span class="sim-step-num">2</span>
                             <div class="sim-step-body">
-                                <strong>Кольцевой разрез (Loop Cut)</strong>
-                                <span>Добавление центрального ребра для крыши</span>
+                                <strong>Петлевой разрез (Loop Cut)</strong>
+                                <span>Разбивка сетки под конёк крыши и окна</span>
                             </div>
                             <button type="button" class="kbd-btn" data-trigger-key="Ctrl+R">Ctrl + R</button>
                         </div>
@@ -101,8 +150,8 @@
                         <div class="sim-step" data-step="2">
                             <span class="sim-step-num">3</span>
                             <div class="sim-step-body">
-                                <strong>Выдавливание (Extrude)</strong>
-                                <span>Подъём конька крыши по оси Z</span>
+                                <strong>Экструдирование (Extrude)</strong>
+                                <span>Вытяжка двускатной крыши, трубы и крыльца</span>
                             </div>
                             <button type="button" class="kbd-btn" data-trigger-key="E">E</button>
                         </div>
@@ -110,8 +159,8 @@
                         <div class="sim-step" data-step="3">
                             <span class="sim-step-num">4</span>
                             <div class="sim-step-body">
-                                <strong>Снятие фаски (Bevel)</strong>
-                                <span>Аккуратное скругление углов модели</span>
+                                <strong>Фаска и детали (Bevel)</strong>
+                                <span>Скругление карнизов и наличников окон</span>
                             </div>
                             <button type="button" class="kbd-btn" data-trigger-key="Ctrl+B">Ctrl + B</button>
                         </div>
@@ -119,86 +168,138 @@
                         <div class="sim-step" data-step="4">
                             <span class="sim-step-num">5</span>
                             <div class="sim-step-body">
-                                <strong>Финальный рендер (Render)</strong>
-                                <span>Просчёт света, теней и светящихся окон</span>
+                                <strong>Финальный рендер (Cycles F12)</strong>
+                                <span>Просчёт плиток рендера, света и свечения</span>
                             </div>
                             <button type="button" class="kbd-btn" data-trigger-key="F12">F12</button>
                         </div>
                     </div>
 
                     <div id="sim-complete-banner" class="sim-complete-banner" hidden>
-                        🎉 <strong>Готово!</strong> Ты прошёл полный цикл от куба до финального рендера!
+                        🎉 <strong>Сцена отрендерена!</strong> Покрути готовый дом мышкой или пальцем и переключай режимы вьюпорта сверху!
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. ЛАБОРАТОРИЯ МАТЕРИАЛОВ И РЕНДЕРА (EEVEE VS CYCLES) -->
+        <!-- 2. ЛАБОРАТОРИЯ ШЕЙДЕРОВ (PRINCIPLED BSDF) И ДВИЖКОВ РЕНДЕРА -->
         <section id="lab" class="section fade-in">
             <h2 class="glass-title">Лаборатория шейдеров и движков рендера</h2>
 
             <div class="lab-layout">
-                <div class="glass lab-preview">
-                    <div class="lab-top-bar">
+                <!-- Левое окно: Интерактивный 3D Render Preview -->
+                <div class="glass lab-preview blender-window">
+                    <div class="blender-topbar">
                         <div class="lab-shape-switch">
-                            <button type="button" class="glass-btn mini-btn active" data-lab-shape="house">🏠 3D-дом</button>
-                            <button type="button" class="glass-btn mini-btn" data-lab-shape="sphere">🔮 Шейдер-шар</button>
+                            <button type="button" class="glass-btn mini-btn active" data-lab-shape="shaderball">🔮 3D Шейдер-шар</button>
+                            <button type="button" class="glass-btn mini-btn" data-lab-shape="house">🏠 3D Коттедж</button>
+                            <button type="button" class="glass-btn mini-btn" data-lab-shape="torus">🍩 3D Тор (Кристалл)</button>
                         </div>
-                        <span id="lab-render-status" class="hud-pill">Движок: Cycles + Denoiser</span>
+
+                        <div class="hdri-switch" title="Освещение HDRI-карты">
+                            <button type="button" class="hdri-btn active" data-hdri="sunset" title="Тёплый закат HDRI">🌅</button>
+                            <button type="button" class="hdri-btn" data-hdri="studio" title="Нейтральная фотостудия">💡</button>
+                            <button type="button" class="hdri-btn" data-hdri="night" title="Ночной кибер-неон">🌙</button>
+                        </div>
                     </div>
 
-                    <canvas id="lab-canvas" width="560" height="380" aria-label="Превью материала и рендера"></canvas>
+                    <div class="lab-canvas-wrap">
+                        <canvas id="lab-canvas" width="640" height="420" aria-label="Интерактивный 3D предпросмотр шейдера"></canvas>
+                        <div class="lab-overlay-top">
+                            <span id="lab-render-status" class="hud-pill">Cycles • Path Tracing</span>
+                            <span id="lab-sample-counter" class="hud-pill sample-pill">Samples: 128 / 128 ✓</span>
+                        </div>
+                        <div class="lab-overlay-bottom">
+                            <span>🖱️ Крути 3D-модель мышкой или пальцем</span>
+                            <button type="button" id="lab-autorotate-btn" class="glass-btn mini-btn active">⟳ Автовращение: Вкл</button>
+                        </div>
+                    </div>
 
                     <p id="lab-engine-hint" class="lab-hint">
-                        <strong>Cycles + Denoiser:</strong> физически точные мягкие тени, а нейросетевой шумоподавитель очищает «зернистость».
+                        <strong>Cycles + Denoiser:</strong> честная трассировка лучей с мягкими тенями и бликами, а ИИ-шумоподавитель полностью убирает «зернистость».
                     </p>
                 </div>
 
+                <!-- Правое окно: Настоящий узел Principled BSDF из Shader Editor -->
                 <div class="glass lab-controls">
-                    <h3>Узел Principled BSDF и рендер</h3>
+                    <div class="bsdf-node">
+                        <div class="bsdf-node-header">
+                            <span class="node-title">▾ Principled BSDF</span>
+                            <span class="node-output-tag">BSDF ●───● Material Output</span>
+                        </div>
 
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Base Color (Базовый цвет)</span>
-                            <div class="color-presets">
-                                <button type="button" class="color-dot active" style="background:#e06d3b" data-color="#e06d3b" title="Терракота"></button>
-                                <button type="button" class="color-dot" style="background:#38bdf8" data-color="#38bdf8" title="Небесный"></button>
-                                <button type="button" class="color-dot" style="background:#34d399" data-color="#34d399" title="Изумруд"></button>
-                                <button type="button" class="color-dot" style="background:#a78bfa" data-color="#a78bfa" title="Аметист"></button>
-                                <input type="color" id="lab-color" value="#e06d3b" aria-label="Выбор цвета материала">
+                        <div class="bsdf-node-body">
+                            <!-- Base Color -->
+                            <div class="socket-row">
+                                <span class="socket-dot socket-yellow"></span>
+                                <div class="socket-content">
+                                    <div class="control-label">
+                                        <span>Base Color (Цвет)</span>
+                                        <div class="color-presets">
+                                            <button type="button" class="color-dot active" style="background:#f5792a" data-color="#f5792a" title="Blender Orange"></button>
+                                            <button type="button" class="color-dot" style="background:#38bdf8" data-color="#38bdf8" title="Сапфир"></button>
+                                            <button type="button" class="color-dot" style="background:#10b981" data-color="#10b981" title="Изумруд"></button>
+                                            <button type="button" class="color-dot" style="background:#a855f7" data-color="#a855f7" title="Аметист"></button>
+                                            <button type="button" class="color-dot" style="background:#eab308" data-color="#eab308" title="Золото"></button>
+                                            <input type="color" id="lab-color" value="#f5792a" aria-label="Выбор цвета материала">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Metallic -->
+                            <div class="socket-row">
+                                <span class="socket-dot socket-grey"></span>
+                                <div class="socket-content">
+                                    <div class="control-label">
+                                        <label for="lab-metallic">Metallic (Металличность)</label>
+                                        <span id="lab-metallic-val" class="val-badge">0.20</span>
+                                    </div>
+                                    <input type="range" id="lab-metallic" min="0" max="1" step="0.05" value="0.20">
+                                    <div class="range-hints"><span>0.0 (Диэлектрик / Пластик)</span><span>1.0 (Чистый хром / Металл)</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Roughness -->
+                            <div class="socket-row">
+                                <span class="socket-dot socket-grey"></span>
+                                <div class="socket-content">
+                                    <div class="control-label">
+                                        <label for="lab-roughness">Roughness (Шероховатость)</label>
+                                        <span id="lab-roughness-val" class="val-badge">0.25</span>
+                                    </div>
+                                    <input type="range" id="lab-roughness" min="0.05" max="1" step="0.05" value="0.25">
+                                    <div class="range-hints"><span>0.05 (Зеркальный глянец)</span><span>1.00 (Матовый гипс)</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Emission -->
+                            <div class="socket-row">
+                                <span class="socket-dot socket-yellow"></span>
+                                <div class="socket-content">
+                                    <div class="control-label">
+                                        <label for="lab-emission">Emission Strength (Свечение неона/окон)</label>
+                                        <span id="lab-emission-val" class="val-badge">0.75</span>
+                                    </div>
+                                    <input type="range" id="lab-emission" min="0" max="1" step="0.05" value="0.75">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="control-group">
-                        <div class="control-label">
-                            <label for="lab-roughness">Roughness (Шероховатость / Блеск)</label>
-                            <span id="lab-roughness-val" class="val-badge">0.35</span>
-                        </div>
-                        <input type="range" id="lab-roughness" min="0.05" max="1" step="0.05" value="0.35">
-                        <div class="range-hints"><span>0.05 (Зеркальный блик)</span><span>1.00 (Матовый)</span></div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            <label for="lab-emission">Emission (Свечение окон / неона)</label>
-                            <span id="lab-emission-val" class="val-badge">0.80</span>
-                        </div>
-                        <input type="range" id="lab-emission" min="0" max="1" step="0.05" value="0.80">
-                    </div>
-
-                    <div class="control-group">
-                        <span class="control-title">Движок рендера:</span>
+                    <!-- Настройки Render Properties -->
+                    <div class="render-props-box">
+                        <span class="control-title">⚙ Render Properties (Движок рендера):</span>
                         <div class="engine-buttons">
-                            <button type="button" class="glass-btn engine-btn" data-engine="eevee">⚡ EEVEE (Быстрый)</button>
-                            <button type="button" class="glass-btn engine-btn active" data-engine="cycles">🎥 Cycles (Фотореализм)</button>
+                            <button type="button" class="glass-btn engine-btn" data-engine="eevee">⚡ EEVEE (Real-Time)</button>
+                            <button type="button" class="glass-btn engine-btn active" data-engine="cycles">🎥 Cycles (Ray Tracing)</button>
                         </div>
-                    </div>
 
-                    <label class="lesson-check lab-denoise-check" id="denoise-wrapper">
-                        <input type="checkbox" id="lab-denoiser" checked>
-                        <span>Включить <strong>Denoiser</strong> (убрать шум в Cycles)</span>
-                    </label>
+                        <label class="lesson-check lab-denoise-check" id="denoise-wrapper">
+                            <input type="checkbox" id="lab-denoiser" checked>
+                            <span>Включить <strong>OptiX Denoiser</strong> (убрать шум трассировки лучей в Cycles)</span>
+                        </label>
+                    </div>
                 </div>
             </div>
         </section>
