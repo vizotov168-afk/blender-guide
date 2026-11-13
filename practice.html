@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практика и словарь Blender — интерактивный тренажёр</title>
+    <meta name="description" content="Симулятор горячих клавиш Blender, лаборатория материалов EEVEE и Cycles, практический чек-лист к видеоурокам и словарь 3D-терминов для новичков.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Применяем сохранённую тему до отрисовки, чтобы не было мигания -->
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.body.setAttribute('data-theme', 'light');
+                }
+            } catch (e) { /* localStorage недоступен */ }
+        })();
+    </script>
+
+    <div class="bg-animation"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <header class="header glass">
+        <a class="logo" href="index.html" aria-label="На главную страницу">
+            <svg class="logo-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 2 3 7v10l9 5 9-5V7z"></path>
+                <path d="M3 7l9 5 9-5M12 12v10"></path>
+            </svg>
+            <span>Blender 3D</span>
+        </a>
+
+        <nav class="nav-links" id="nav-links" aria-label="Навигация по разделу практики">
+            <a href="index.html">← Главная</a>
+            <a href="#simulator">Симулятор</a>
+            <a href="#lab">Материалы</a>
+            <a href="#checklist">Чек-лист</a>
+            <a href="#glossary">Словарь</a>
+        </nav>
+
+        <button class="glass-btn nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Открыть меню">
+            <span class="burger"></span>
+        </button>
+        <button class="glass-btn theme-btn" id="theme-toggle" type="button">☀️ Светлая</button>
+    </header>
+
+    <main>
+        <noscript>
+            <div class="glass card" style="margin-bottom: 30px; text-align: center;">
+                <p>Для работы симулятора, лаборатории и словаря нужен включённый JavaScript.</p>
+            </div>
+        </noscript>
+
+        <!-- ================= HERO ================= -->
+        <section class="hero glass page-hero fade-in">
+            <p class="eyebrow">Раздел 2 · Практика</p>
+            <h1>Практика и словарь терминов</h1>
+            <p>Закрепи то, что узнал из видеоуроков: «нажми» горячие клавиши Blender прямо в браузере, покрути ползунки материалов, отметь выполненные задания и найди любой непонятный термин.</p>
+            <div class="hero-actions">
+                <a href="#simulator" class="glass-btn primary-btn">🎮 Начать с симулятора</a>
+                <a href="#glossary" class="glass-btn primary-btn">📖 Открыть словарь</a>
+            </div>
+            <ul class="hero-stats">
+                <li><b>5</b> миссий в симуляторе</li>
+                <li><b>2</b> движка рендера</li>
+                <li><b>20</b> практических шагов</li>
+                <li><b>18</b> терминов</li>
+            </ul>
+        </section>
+
+        <!-- ================= 1. СИМУЛЯТОР ================= -->
+        <section class="section" id="simulator" aria-labelledby="sim-title">
+            <h2 class="glass glass-title fade-in" id="sim-title">🎮 Симулятор горячих клавиш Blender</h2>
+            <p class="section-lead">Кликни по окну вьюпорта и выполни 5 миссий настоящими клавишами. На телефоне нажимай экранные кнопки под окном. Модель можно вращать мышью или пальцем.</p>
+
+            <div class="sim-layout">
+                <div class="viewport-shell glass" id="sim-shell" tabindex="0" role="application" aria-label="Симулятор вьюпорта Blender. Нажимайте клавиши Tab, Ctrl+R, E, Ctrl+B и F12. Клавиша Escape выходит из симулятора.">
+                    <div class="vp-header">
+                        <span class="vp-mode" id="sim-mode" data-mode="object">Object Mode</span>
+                        <span>View</span>
+                        <span>Select</span>
+                        <span>Add</span>
+                        <span>Object</span>
+                        <span class="vp-spacer"></span>
+                        <span class="vp-shading" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i></span>
+                    </div>
+
+                    <div class="vp-stage">
+                        <canvas id="sim-canvas" width="960" height="600" aria-label="3D-вьюпорт с моделью домика"></canvas>
+                        <div class="vp-focus-hint" id="sim-focus-hint">👆 Нажми на окно — и управляй клавишами · Esc — выйти</div>
+                    </div>
+
+                    <div class="vp-footer">
+                        <span class="vp-status" id="sim-status"></span>
+                        <span class="vp-keys" id="sim-keys" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="key-pad" role="group" aria-label="Экранные клавиши для телефона">
+                        <button type="button" class="glass-btn pad-key" data-combo="tab"><kbd>Tab</kbd><span>Edit Mode</span></button>
+                        <button type="button" class="glass-btn pad-key" data-combo="ctrl+r"><kbd>Ctrl + R</kbd><span>Loop Cut</span></button>
+                        <button type="button" class="glass-btn pad-key" data-combo="e"><kbd>E</kbd><span>Extrude</span></button>
+                        <button type="button" class="glass-btn pad-key" data-combo="ctrl+b"><kbd>Ctrl + B</kbd><span>Bevel</span></button>
+                        <button type="button" class="glass-btn pad-key" data-combo="f12"><kbd>F12</kbd><span>Render</span></button>
+                    </div>
+                </div>
+
+                <aside class="mission-panel glass card" aria-label="Миссии симулятора">
+                    <div class="mission-head">
+                        <h3>Миссии</h3>
+                        <strong class="mission-counter">Выполнено: <span id="sim-counter">0 / 5</span></strong>
+                    </div>
+                    <div class="lesson-progress-track" aria-hidden="true">
+                        <div class="lesson-progress-fill" id="sim-progress-fill"></div>
+                    </div>
+
+                    <ol class="mission-list" id="sim-steps">
+                        <li class="mission" data-step="0">
+                            <span class="mission-num">1</span>
+                            <div>
+                                <strong>Режим редактирования</strong>
+                                <span class="mission-keys"><kbd>Tab</kbd></span>
+                                <p>Переключись из Object Mode в Edit Mode — вершины и рёбра станут оранжевыми.</p>
+                            </div>
+                        </li>
+                        <li class="mission" data-step="1">
+                            <span class="mission-num">2</span>
+                            <div>
+                                <strong>Кольцевой разрез</strong>
+                                <span class="mission-keys"><kbd>Ctrl</kbd> + <kbd>R</kbd></span>
+                                <p>Loop Cut добавит «поясок» из рёбер по центру высоты дома.</p>
+                            </div>
+                        </li>
+                        <li class="mission" data-step="2">
+                            <span class="mission-num">3</span>
+                            <div>
+                                <strong>Выдавливание крыши</strong>
+                                <span class="mission-keys"><kbd>E</kbd></span>
+                                <p>Extrude вытянет верхнюю часть вверх — получится двускатная крыша.</p>
+                            </div>
+                        </li>
+                        <li class="mission" data-step="3">
+                            <span class="mission-num">4</span>
+                            <div>
+                                <strong>Фаска на углах</strong>
+                                <span class="mission-keys"><kbd>Ctrl</kbd> + <kbd>B</kbd></span>
+                                <p>Bevel срежет острые вертикальные углы, и модель станет аккуратнее.</p>
+                            </div>
+                        </li>
+                        <li class="mission" data-step="4">
+                            <span class="mission-num">5</span>
+                            <div>
+                                <strong>Финальный рендер</strong>
+                                <span class="mission-keys"><kbd>F12</kbd></span>
+                                <p>Каркас превратится в освещённую сцену с тенями и светящимися окнами.</p>
+                            </div>
+                        </li>
+                    </ol>
+
+                    <p class="sim-hint" id="sim-hint" aria-live="polite"></p>
+
+                    <div class="win-banner" id="sim-win" hidden>
+                        <span class="win-icon" aria-hidden="true">🏆</span>
+                        <div>
+                            <strong>Все 5 миссий выполнены!</strong>
+                            <p>Ты прошёл путь от куба до готового рендера. Теперь попробуй то же самое в настоящем Blender.</p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="glass-btn" id="sim-restart">↺ Пройти симулятор заново</button>
+                    <p class="small-text">Если F12 открывает инструменты браузера, нажми экранную кнопку F12 под окном.</p>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ================= 2. ЛАБОРАТОРИЯ ================= -->
+        <section class="section" id="lab" aria-labelledby="lab-title">
+            <h2 class="glass glass-title fade-in" id="lab-title">🎨 Лаборатория: материалы и рендер</h2>
+            <p class="section-lead">Двигай ползунки узла <strong>Principled BSDF</strong> и смотри результат сразу. Переключи движок на <strong>Cycles</strong>, чтобы увидеть шум, и включи <strong>Denoiser</strong>, чтобы его убрать.</p>
+
+            <div class="lab-layout">
+                <div class="lab-stage glass">
+                    <div class="vp-stage">
+                        <canvas id="lab-canvas" width="640" height="400" aria-label="Превью дома с настраиваемым материалом"></canvas>
+                        <span class="lab-badge" id="lab-badge">EEVEE · реальное время</span>
+                    </div>
+                    <div class="lab-readout">
+                        <span>⏱ Условное время рендера: <b id="lab-time">≈ 0.1 с</b></span>
+                        <span class="lab-note" id="lab-note" aria-live="polite"></span>
+                    </div>
+                </div>
+
+                <div class="lab-controls glass card">
+                    <h3>Principled BSDF</h3>
+
+                    <div class="ctrl-group">
+                        <label class="ctrl-label" for="lab-color">Base Color <small>цвет объекта</small></label>
+                        <div class="ctrl-row">
+                            <input type="color" id="lab-color" value="#d9b38c">
+                            <output id="lab-color-hex" for="lab-color">#d9b38c</output>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-group">
+                        <label class="ctrl-label" for="lab-rough">Roughness <small>0 — зеркало, 1 — мат</small></label>
+                        <div class="ctrl-row">
+                            <input type="range" id="lab-rough" min="0" max="1" step="0.01" value="0.45">
+                            <output id="lab-rough-val" for="lab-rough">0.45</output>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-group">
+                        <label class="ctrl-label" for="lab-emis">Emission <small>свечение окон</small></label>
+                        <div class="ctrl-row">
+                            <input type="range" id="lab-emis" min="0" max="10" step="0.1" value="4">
+                            <output id="lab-emis-val" for="lab-emis">4.0</output>
+                        </div>
+                    </div>
+
+                    <h3 class="lab-subtitle">Render</h3>
+
+                    <div class="ctrl-group">
+                        <span class="ctrl-label" id="lab-engine-label">Движок рендера</span>
+                        <div class="seg" role="radiogroup" aria-labelledby="lab-engine-label">
+                            <input type="radio" name="lab-engine" id="eng-eevee" value="eevee" checked>
+                            <label for="eng-eevee">EEVEE</label>
+                            <input type="radio" name="lab-engine" id="eng-cycles" value="cycles">
+                            <label for="eng-cycles">Cycles</label>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-group is-disabled" id="lab-samples-group">
+                        <label class="ctrl-label" for="lab-samples">Samples <small>только Cycles</small></label>
+                        <div class="ctrl-row">
+                            <input type="range" id="lab-samples" min="4" max="256" step="4" value="16" disabled>
+                            <output id="lab-samples-val" for="lab-samples">16</output>
+                        </div>
+                    </div>
+
+                    <div class="ctrl-group is-disabled" id="lab-denoise-group">
+                        <label class="toggle-row" for="lab-denoise">
+                            <input type="checkbox" id="lab-denoise" disabled>
+                            <span>Denoiser <small>шумоподавление, только Cycles</small></span>
+                        </label>
+                    </div>
+
+                    <div class="ctrl-group">
+                        <span class="ctrl-label">Быстрые пресеты</span>
+                        <div class="preset-row">
+                            <button type="button" class="glass-btn chip-btn" data-preset="glossy">Глянец</button>
+                            <button type="button" class="glass-btn chip-btn" data-preset="matte">Мат</button>
+                            <button type="button" class="glass-btn chip-btn" data-preset="glow">Яркие окна</button>
+                            <button type="button" class="glass-btn chip-btn" data-preset="dark">Свет выключен</button>
+                            <button type="button" class="glass-btn chip-btn" id="lab-reset">↺ Сброс</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. ЧЕК-ЛИСТ ================= -->
+        <section class="section" id="checklist" aria-labelledby="chk-title">
+            <h2 class="glass glass-title fade-in" id="chk-title">✅ Практический чек-лист к урокам</h2>
+            <p class="section-lead">К каждому видеоуроку — четыре практических шага. Отмечай выполненное: прогресс сохраняется в браузере.</p>
+
+            <div class="progress-summary glass fade-in">
+                <span id="chk-text">Выполнено 0 из 20 шагов</span>
+                <div class="lesson-progress-track" aria-hidden="true">
+                    <div class="lesson-progress-fill" id="chk-fill"></div>
+                </div>
+                <span class="chk-saved" id="chk-saved" aria-live="polite"></span>
+                <button type="button" class="glass-btn chip-btn" id="chk-reset">Сбросить прогресс</button>
+            </div>
+
+            <div class="chk-grid">
+                <!-- Урок 1 -->
+                <article class="chk-card card glass animate-hover fade-in" data-lesson="1">
+                    <header class="chk-head">
+                        <span class="chk-num">1</span>
+                        <h3>Интерфейс и навигация</h3>
+                        <span class="chk-count" data-count>0/4</span>
+                    </header>
+                    <a class="chk-video" href="index.html#lesson1">▶ Смотреть видеоурок 1</a>
+                    <ul class="chk-steps">
+                        <li><label class="chk-step"><input type="checkbox" data-step="1-0"><span>Найди четыре главные области: вьюпорт, <b>Outliner</b> (справа сверху), <b>Properties</b> (справа снизу) и <b>Timeline</b> (внизу).</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="1-1"><span>Покрути вид: зажми колесо мыши — вращение, <kbd>Shift</kbd> + колесо — сдвиг, прокрутка колеса — зум.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="1-2"><span>Переключи виды: <kbd>Numpad 1</kbd> — спереди, <kbd>Numpad 3</kbd> — сбоку, <kbd>Numpad 7</kbd> — сверху.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="1-3"><span>Открой боковую панель <kbd>N</kbd>, а потом верни всё в кадр клавишей <kbd>Home</kbd>.</span></label></li>
+                    </ul>
+                    <p class="tip-box"><strong>⚠ Частая ошибка.</strong> На ноутбуке нет Numpad. Включи <b>Edit → Preferences → Input → Emulate Numpad</b>, и цифры верхнего ряда заработают как Numpad. Либо используй меню <b>View → Viewpoint</b>.</p>
+                </article>
+
+                <!-- Урок 2 -->
+                <article class="chk-card card glass animate-hover fade-in" data-lesson="2">
+                    <header class="chk-head">
+                        <span class="chk-num">2</span>
+                        <h3>Объекты и трансформации</h3>
+                        <span class="chk-count" data-count>0/4</span>
+                    </header>
+                    <a class="chk-video" href="index.html#lesson2">▶ Смотреть видеоурок 2</a>
+                    <ul class="chk-steps">
+                        <li><label class="chk-step"><input type="checkbox" data-step="2-0"><span>Добавь куб: <kbd>Shift</kbd> + <kbd>A</kbd> → Mesh → Cube.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="2-1"><span>Подвинь куб клавишей <kbd>G</kbd>, затем нажми ось <kbd>X</kbd>, <kbd>Y</kbd> или <kbd>Z</kbd>. Подтверди левой кнопкой мыши или <kbd>Enter</kbd>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="2-2"><span>Поверни <kbd>R</kbd> и масштабируй <kbd>S</kbd>. Точное значение вводи цифрами: <kbd>R</kbd> <kbd>Z</kbd> <kbd>9</kbd> <kbd>0</kbd> повернёт на 90°.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="2-3"><span>Отмени действие <kbd>Ctrl</kbd> + <kbd>Z</kbd> и удали лишний объект клавишей <kbd>X</kbd>.</span></label></li>
+                    </ul>
+                    <p class="tip-box"><strong>⚠ Частая ошибка.</strong> Нажал <kbd>G</kbd>, и объект «улетел»? Отмени движение правой кнопкой мыши или <kbd>Esc</kbd>, и объект вернётся на место. Подтверждает действие только левая кнопка или <kbd>Enter</kbd>.</p>
+                </article>
+
+                <!-- Урок 3 -->
+                <article class="chk-card card glass animate-hover fade-in" data-lesson="3">
+                    <header class="chk-head">
+                        <span class="chk-num">3</span>
+                        <h3>Edit Mode и моделирование</h3>
+                        <span class="chk-count" data-count>0/4</span>
+                    </header>
+                    <a class="chk-video" href="index.html#lesson3">▶ Смотреть видеоурок 3</a>
+                    <ul class="chk-steps">
+                        <li><label class="chk-step"><input type="checkbox" data-step="3-0"><span>Нажми <kbd>Tab</kbd>, чтобы войти в Edit Mode, и переключай вершины, рёбра и грани клавишами <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="3-1"><span>Добавь кольцевой разрез <kbd>Ctrl</kbd> + <kbd>R</kbd>: колесо мыши меняет число разрезов, левая кнопка ставит разрез.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="3-2"><span>Выдави грань клавишей <kbd>E</kbd> и вдави рамку клавишей <kbd>I</kbd> (Inset).</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="3-3"><span>Скруги угол <kbd>Ctrl</kbd> + <kbd>B</kbd> и покрути колесо мыши, чтобы добавить сегменты.</span></label></li>
+                    </ul>
+                    <p class="tip-box"><strong>⚠ Частая ошибка.</strong> Нажал <kbd>E</kbd>, отменил правой кнопкой, а грань осталась «двойной»? Нажми <kbd>Ctrl</kbd> + <kbd>Z</kbd>, иначе внутри модели останется лишняя геометрия. И помни: <kbd>E</kbd> выдавливает только в Edit Mode.</p>
+                </article>
+
+                <!-- Урок 4 -->
+                <article class="chk-card card glass animate-hover fade-in" data-lesson="4">
+                    <header class="chk-head">
+                        <span class="chk-num">4</span>
+                        <h3>Материалы и текстуры</h3>
+                        <span class="chk-count" data-count>0/4</span>
+                    </header>
+                    <a class="chk-video" href="index.html#lesson4">▶ Смотреть видеоурок 4</a>
+                    <ul class="chk-steps">
+                        <li><label class="chk-step"><input type="checkbox" data-step="4-0"><span>Выбери объект, открой вкладку <b>Material Properties</b> (значок-шарик) и нажми <b>New</b>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="4-1"><span>В <b>Principled BSDF</b> поменяй <b>Base Color</b> и подвигай <b>Roughness</b>: 0 — глянец, 1 — мат.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="4-2"><span>Сделай окнам свечение: теплый цвет в <b>Emission</b> и <b>Strength</b> около 3–5.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="4-3"><span>Нажми <kbd>Z</kbd> → Material Preview, а в Edit Mode — <kbd>U</kbd> → Smart UV Project для развёртки.</span></label></li>
+                    </ul>
+                    <p class="tip-box"><strong>⚠ Частая ошибка.</strong> Цвет материала не виден? Скорее всего, включён режим Solid. Нажми <kbd>Z</kbd> и выбери <b>Material Preview</b>, тогда будут видны материалы и свет.</p>
+                </article>
+
+                <!-- Урок 5 -->
+                <article class="chk-card card glass animate-hover fade-in" data-lesson="5">
+                    <header class="chk-head">
+                        <span class="chk-num">5</span>
+                        <h3>Свет, камера и рендер</h3>
+                        <span class="chk-count" data-count>0/4</span>
+                    </header>
+                    <a class="chk-video" href="index.html#lesson5">▶ Смотреть видеоурок 5</a>
+                    <ul class="chk-steps">
+                        <li><label class="chk-step"><input type="checkbox" data-step="5-0"><span>Добавь свет: <kbd>Shift</kbd> + <kbd>A</kbd> → Light → Sun (или Point) и подвинь его клавишей <kbd>G</kbd>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="5-1"><span>Добавь камеру, посмотри через неё <kbd>Numpad 0</kbd> и подгони кадр: <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Numpad 0</kbd>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="5-2"><span>Во вкладке <b>Render</b> выбери движок. Для Cycles поставь Samples 64–128 и включи <b>Denoise</b>.</span></label></li>
+                        <li><label class="chk-step"><input type="checkbox" data-step="5-3"><span>Нажми <kbd>F12</kbd>, дождись картинки и сохрани её: <kbd>Shift</kbd> + <kbd>Alt</kbd> + <kbd>S</kbd> (Image → Save As).</span></label></li>
+                    </ul>
+                    <p class="tip-box"><strong>⚠ Частая ошибка.</strong> Рендер получился чёрным? Проверь, есть ли в сцене камера (<kbd>Numpad 0</kbd> покажет вид из неё) и свет. И не забудь сохранить картинку: сама она не сохраняется.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ================= 4. СЛОВАРЬ ================= -->
+        <section class="section" id="glossary" aria-labelledby="gl-title">
+            <h2 class="glass glass-title fade-in" id="gl-title">📖 Словарь 3D-терминов для новичков</h2>
+            <p class="section-lead">Страшные слова простыми словами. Начни вводить термин в поиск или выбери категорию.</p>
+
+            <div class="gl-toolbar glass">
+                <div class="gl-search-wrap">
+                    <label class="visually-hidden" for="gl-search">Поиск по словарю</label>
+                    <input type="search" id="gl-search" placeholder="🔍 Найти термин…" autocomplete="off">
+                </div>
+                <div class="chip-row" id="gl-chips" role="group" aria-label="Фильтр по категориям">
+                    <button type="button" class="chip" data-cat="all" aria-pressed="true">Все</button>
+                    <button type="button" class="chip" data-cat="ui" aria-pressed="false">Интерфейс</button>
+                    <button type="button" class="chip" data-cat="model" aria-pressed="false">Моделирование</button>
+                    <button type="button" class="chip" data-cat="mat" aria-pressed="false">Материалы и свет</button>
+                    <button type="button" class="chip" data-cat="render" aria-pressed="false">Рендер</button>
+                </div>
+                <p class="gl-count" id="gl-count" aria-live="polite"></p>
+            </div>
+
+            <div class="gl-grid" id="gl-grid"></div>
+            <p class="gl-empty glass" id="gl-empty" hidden>Ничего не найдено. Попробуй другое слово или сбрось фильтр.</p>
+        </section>
+    </main>
+
+    <footer class="footer glass">
+        <p>Blender 3D — школьный индивидуальный проект</p>
+        <p class="small-text"><a href="index.html">← Вернуться на главную страницу с видеоуроками</a></p>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Наверх">↑</button>
+
+    <script src="practice.js"></script>
+</body>
+</html>
